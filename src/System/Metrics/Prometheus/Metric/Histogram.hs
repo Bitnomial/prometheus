@@ -52,8 +52,10 @@ observe x = flip atomicModifyIORef' update . unHistogram
 
 
 updateBuckets :: Double -> Buckets -> Buckets
-updateBuckets x = Map.mapWithKey updateBucket
-  where updateBucket key val = bool val (val + 1) (x <= key)
+updateBuckets x bs = updateBucket $ Map.lookupGE x bs
+  where
+    updateBucket Nothing       = bs
+    updateBucket (Just (k, v)) = Map.insert k (v + 1) bs
 
 
 sample :: Histogram -> IO HistogramSample
