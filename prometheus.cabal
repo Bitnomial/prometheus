@@ -1,5 +1,5 @@
 name:                prometheus
-version:             0.4.0
+version:             0.4.1.42
 synopsis:            Prometheus Haskell Client
 homepage:            http://github.com/LukeHoersten/prometheus#readme
 bug-reports:         http://github.com/LukeHoersten/prometheus/issues
