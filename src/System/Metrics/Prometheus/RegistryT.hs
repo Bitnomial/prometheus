@@ -1,7 +1,12 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE CPP #-}
 
 module System.Metrics.Prometheus.RegistryT where
 
+#if __GLASGOW_HASKELL__ < 710
+import Control.Applicative ((<$>), Applicative)
+import Control.Monad.Trans.State.Strict (runStateT)
+#endif
 import           Control.Monad.IO.Class                     (MonadIO, liftIO)
 import           Control.Monad.Trans.Class                  (MonadTrans)
 import           Control.Monad.Trans.State.Strict           (StateT (..),
@@ -32,11 +37,11 @@ execRegistryT :: Monad m => RegistryT m a -> m Registry
 execRegistryT = flip execStateT new . unRegistryT
 
 
-runRegistryT :: Monad m => RegistryT m a -> m (a, Registry)
+runRegistryT :: RegistryT m a -> m (a, Registry)
 runRegistryT = flip runStateT new . unRegistryT
 
 
-withRegistry :: MonadIO m => (Registry -> m (a, Registry)) -> RegistryT m a
+withRegistry :: (Registry -> m (a, Registry)) -> RegistryT m a
 withRegistry = RegistryT . StateT
 
 
@@ -52,5 +57,9 @@ registerHistogram :: MonadIO m => Name -> Labels -> [Histogram.UpperBound] -> Re
 registerHistogram n l u = withRegistry (liftIO . R.registerHistogram n l u)
 
 
+#if __GLASGOW_HASKELL__ < 710
+sample :: (Monad m, Functor m) => RegistryT m (IO RegistrySample)
+#else
 sample :: Monad m => RegistryT m (IO RegistrySample)
+#endif
 sample = R.sample <$> RegistryT get

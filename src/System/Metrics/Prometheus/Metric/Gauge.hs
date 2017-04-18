@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module System.Metrics.Prometheus.Metric.Gauge
        ( Gauge
        , GaugeSample (..)
@@ -12,6 +13,9 @@ module System.Metrics.Prometheus.Metric.Gauge
 
 import           Data.IORef (IORef, atomicModifyIORef', atomicWriteIORef,
                              newIORef, readIORef)
+#if __GLASGOW_HASKELL__ < 710
+import Control.Applicative ((<$>))
+#endif
 
 
 newtype Gauge = Gauge { unGauge :: IORef Double }

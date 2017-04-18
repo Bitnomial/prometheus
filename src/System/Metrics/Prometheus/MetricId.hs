@@ -1,4 +1,5 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE CPP #-}
 
 module System.Metrics.Prometheus.MetricId where
 
@@ -6,6 +7,9 @@ import           Data.Map    (Map)
 import qualified Data.Map    as Map
 import           Data.String (IsString)
 import           Data.Text   (Text)
+#if __GLASGOW_HASKELL__ < 710
+import Data.Monoid (Monoid)
+#endif
 import           Prelude     hiding (null)
 
 

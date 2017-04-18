@@ -8,7 +8,7 @@ module System.Metrics.Prometheus.Encode.Histogram
 import           Data.ByteString.Builder                    (Builder)
 import           Data.List                                  (intersperse)
 import qualified Data.Map                                   as Map
-import           Data.Monoid                                ((<>))
+import           Data.Monoid
 
 import           System.Metrics.Prometheus.Encode.MetricId  (encodeDouble,
                                                              encodeInt,

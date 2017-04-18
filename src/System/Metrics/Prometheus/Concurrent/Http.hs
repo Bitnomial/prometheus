@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP #-}
 
 module System.Metrics.Prometheus.Concurrent.Http
        ( Path
@@ -8,6 +9,9 @@ module System.Metrics.Prometheus.Concurrent.Http
        )
        where
 
+#if __GLASGOW_HASKELL__ < 710
+import Control.Applicative ((<$>))
+#endif
 import           Control.Monad.IO.Class                         (MonadIO,
                                                                  liftIO)
 import           Data.Text                                      (Text)
@@ -37,7 +41,11 @@ serveHttpTextMetrics :: MonadIO m => Port -> Path -> IO RegistrySample -> m ()
 serveHttpTextMetrics port path = liftIO . run port . prometheusApp path
 
 
+#if __GLASGOW_HASKELL__ < 710
+serveHttpTextMetricsT :: (MonadIO m, Functor m) => Port -> Path -> RegistryT m ()
+#else
 serveHttpTextMetricsT :: MonadIO m => Port -> Path -> RegistryT m ()
+#endif
 serveHttpTextMetricsT port path = liftIO . serveHttpTextMetrics port path =<< sample
 
 

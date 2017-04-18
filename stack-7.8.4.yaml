@@ -1,0 +1,19 @@
+resolver: lts-2.22
+
+packages:
+- '.'
+
+extra-deps:
+  - atomic-primops-0.8.0.4
+  - transformers-0.4.0.0
+  - wai-3.2.0
+  - warp-3.2.0
+  - http2-1.4.5
+  - hex-0.1.2
+  - psqueues-0.2.2.3
+  - auto-update-0.1.3
+  - mtl-2.2
+
+flags: {}
+
+extra-package-dbs: []
