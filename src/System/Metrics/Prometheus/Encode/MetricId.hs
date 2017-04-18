@@ -16,7 +16,7 @@ module System.Metrics.Prometheus.Encode.MetricId
 import           Data.ByteString.Builder            (Builder, byteString, char8,
                                                      intDec)
 import           Data.List                          (intersperse)
-import           Data.Monoid                        ((<>))
+import           Data.Monoid                        ((<>),mconcat)
 import           Data.Text                          (Text, replace)
 import           Data.Text.Encoding                 (encodeUtf8)
 import           Data.Text.Lazy                     (toStrict)

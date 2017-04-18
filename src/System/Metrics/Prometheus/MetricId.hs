@@ -3,6 +3,7 @@
 module System.Metrics.Prometheus.MetricId where
 
 import           Data.Map    (Map)
+import           Data.Monoid
 import qualified Data.Map    as Map
 import           Data.String (IsString)
 import           Data.Text   (Text)

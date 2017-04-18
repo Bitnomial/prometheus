@@ -12,7 +12,7 @@ import           Data.Function                              (on)
 import           Data.List                                  (groupBy,
                                                              intersperse)
 import qualified Data.Map                                   as Map
-import           Data.Monoid                                ((<>))
+import           Data.Monoid                                ((<>),mconcat)
 
 import           System.Metrics.Prometheus.Encode.Histogram (encodeHistogram)
 import           System.Metrics.Prometheus.Encode.MetricId  (encodeDouble,
