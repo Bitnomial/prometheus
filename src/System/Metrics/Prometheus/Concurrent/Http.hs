@@ -8,6 +8,7 @@ module System.Metrics.Prometheus.Concurrent.Http
        )
        where
 
+import           Control.Applicative
 import           Control.Monad.IO.Class                         (MonadIO,
                                                                  liftIO)
 import           Data.Text                                      (Text)
@@ -37,7 +38,7 @@ serveHttpTextMetrics :: MonadIO m => Port -> Path -> IO RegistrySample -> m ()
 serveHttpTextMetrics port path = liftIO . run port . prometheusApp path
 
 
-serveHttpTextMetricsT :: MonadIO m => Port -> Path -> RegistryT m ()
+serveHttpTextMetricsT :: (Functor m,MonadIO m) => Port -> Path -> RegistryT m ()
 serveHttpTextMetricsT port path = liftIO . serveHttpTextMetrics port path =<< sample
 
 

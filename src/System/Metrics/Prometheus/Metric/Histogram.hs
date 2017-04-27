@@ -11,6 +11,7 @@ module System.Metrics.Prometheus.Metric.Histogram
        ) where
 
 
+import           Control.Applicative
 import           Data.Bool  (bool)
 import           Data.IORef (IORef, atomicModifyIORef', newIORef, readIORef)
 import           Data.Map   (Map)

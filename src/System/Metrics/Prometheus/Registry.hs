@@ -11,9 +11,11 @@ module System.Metrics.Prometheus.Registry
        , sample
        ) where
 
+import           Control.Applicative
 import           Control.Exception                          (Exception, throw)
 import           Data.Map                                   (Map)
 import qualified Data.Map                                   as Map
+import           Data.Traversable
 import           Data.Typeable                              (Typeable)
 
 import           System.Metrics.Prometheus.Metric           (Metric (..),
@@ -68,7 +70,7 @@ registerHistogram name labels buckets registry = do
 
 
 sample :: Registry -> IO RegistrySample
-sample = fmap RegistrySample . mapM sampleMetric . unRegistry
+sample = fmap RegistrySample . traverse sampleMetric . unRegistry
   where
     sampleMetric :: Metric -> IO MetricSample
     sampleMetric (CounterMetric count) = CounterMetricSample <$> Counter.sample count

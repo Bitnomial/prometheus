@@ -2,6 +2,7 @@
 
 module System.Metrics.Prometheus.Concurrent.RegistryT where
 
+import           Control.Applicative
 import           Control.Monad.IO.Class                        (MonadIO, liftIO)
 import           Control.Monad.Trans.Class                     (MonadTrans)
 import           Control.Monad.Trans.Reader                    (ReaderT (..),
@@ -38,5 +39,5 @@ registerHistogram :: MonadIO m => Name -> Labels -> [Histogram.UpperBound] -> Re
 registerHistogram n l b = RegistryT ask >>= liftIO . R.registerHistogram n l b
 
 
-sample :: Monad m => RegistryT m (IO RegistrySample)
+sample :: (Functor m,Monad m) => RegistryT m (IO RegistrySample)
 sample = R.sample <$> RegistryT ask

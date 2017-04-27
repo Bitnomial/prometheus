@@ -10,6 +10,7 @@ module System.Metrics.Prometheus.Metric.Gauge
        , sample
        ) where
 
+import           Control.Applicative
 import           Data.IORef (IORef, atomicModifyIORef', atomicWriteIORef,
                              newIORef, readIORef)
 

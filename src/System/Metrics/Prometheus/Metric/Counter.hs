@@ -8,6 +8,7 @@ module System.Metrics.Prometheus.Metric.Counter
        ) where
 
 
+import           Control.Applicative
 import           Data.Atomics.Counter (AtomicCounter, incrCounter_, newCounter,
                                        readCounter)
 
