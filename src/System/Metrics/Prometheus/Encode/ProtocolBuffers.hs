@@ -1,4 +1,7 @@
+{-# LANGUAGE FlexibleContexts  #-}
+{-# LANGUAGE OverloadedLabels  #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications  #-}
 
 module System.Metrics.Prometheus.Encode.ProtocolBuffers
   ( encodeMetrics
@@ -11,12 +14,13 @@ import           Data.ByteString.Lazy.Builder               (Builder,
 import qualified Data.Map                                   as Map
 import           Data.ProtoLens                             (def)
 import           Data.ProtoLens.Encoding                    (buildMessageDelimited)
+import           Lens.Labels.Unwrapped                      ()
 import           Network.HTTP.Client                        (Request,
                                                              RequestBody (..),
                                                              requestBody,
                                                              requestHeaders)
 import           Network.Wreq.Types                         (Putable (..))
-import qualified Proto.Proto.Metrics                        as Proto
+import           Proto.Proto.Metrics
 
 import           System.Metrics.Prometheus.Metric           (MetricSample (..))
 import qualified System.Metrics.Prometheus.Metric.Counter   as Counter
@@ -48,54 +52,53 @@ encodeMetrics :: RegistrySample -> Builder
 encodeMetrics = Map.foldMapWithKey ((buildMessageDelimited .) . encodeMetric) . unRegistrySample
 
 
-encodeMetric :: MetricId -> MetricSample -> Proto.MetricFamily
+encodeMetric :: MetricId -> MetricSample -> MetricFamily
 encodeMetric (MetricId (Name name) (Labels labels)) = go
   where
-    base :: Proto.MetricFamily
-    base = def & Proto.name .~ name
-    baseMetric = def & Proto.label .~ labels'
+    base = def @MetricFamily & #name .~ name
+    baseMetric = def & #label .~ labels'
     labels' =
       Map.foldrWithKey
-        (\n v -> ((def & Proto.name .~ n & Proto.value .~ v) :))
+        (\n v -> ((def & #name .~ n & #value .~ v) :))
         []
         labels
     go (CounterMetricSample (Counter.CounterSample i)) =
-      base & Proto.type' .~ Proto.COUNTER
-           & Proto.metric .~
-             [ baseMetric & Proto.counter . Proto.value .~
+      base & #type' .~ COUNTER
+           & #metric .~
+             [ baseMetric & #counter . #value .~
                  fromIntegral i
              ]
     go (GaugeMetricSample (Gauge.GaugeSample i)) =
-      base & Proto.type' .~ Proto.GAUGE
-           & Proto.metric .~
-             [ baseMetric & Proto.gauge . Proto.value .~ i
+      base & #type' .~ GAUGE
+           & #metric .~
+             [ baseMetric & #gauge . #value .~ i
              ]
     go (HistogramMetricSample (Histogram.HistogramSample buckets s count)) =
-      base & Proto.type' .~ Proto.HISTOGRAM
-           & Proto.metric .~
-             [ baseMetric & Proto.histogram .~
-                 (def & Proto.sampleCount .~ fromIntegral count
-                      & Proto.sampleSum .~ s
-                      & Proto.bucket .~
+      base & #type' .~ HISTOGRAM
+           & #metric .~
+             [ baseMetric & #histogram .~
+                 (def & #sampleCount .~ fromIntegral count
+                      & #sampleSum .~ s
+                      & #bucket .~
                           Map.foldrWithKey
-                            (\ub c -> ((def & Proto.cumulativeCount .~
+                            (\ub c -> ((def & #cumulativeCount .~
                                                 round c
-                                            & Proto.upperBound .~ ub
+                                            & #upperBound .~ ub
                                        ) :))
                             []
                             buckets
                  )
              ]
     go (SummaryMetricSample (Summary.SummarySample quantiles s count)) =
-      base & Proto.type' .~ Proto.SUMMARY
-           & Proto.metric .~
-             [ baseMetric & Proto.summary .~
-               (def & Proto.sampleCount .~ fromIntegral count
-                    & Proto.sampleSum .~ fromIntegral s
-                    & Proto.quantile .~
+      base & #type' .~ SUMMARY
+           & #metric .~
+             [ baseMetric & #summary .~
+               (def & #sampleCount .~ fromIntegral count
+                    & #sampleSum .~ fromIntegral s
+                    & #quantile .~
                         Map.foldrWithKey
-                          (\q v -> ((def & Proto.quantile .~ q
-                                         & Proto.value .~ fromIntegral v
+                          (\q v -> ((def & #quantile .~ q
+                                         & #value .~ fromIntegral v
                                     ) :))
                           []
                           quantiles

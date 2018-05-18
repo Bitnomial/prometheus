@@ -8,6 +8,28 @@ bytes. Batteries-included web server.  .  [Usage Example]
 - [Hackage Package](https://hackage.haskell.org/package/prometheus)
 - [Github](http://github.com/LukeHoersten/prometheus)
 
+## Building
+First you'll have to get [protoc](https://github.com/google/protobuf). Visit
+the linked repo and download a binary for your platform and put it in a place
+in your `PATH`. Next get the `proto-lens-protoc` package. You can use stack
+for this.
+
+```bash
+stack install proto-lens-protoc
+```
+
+Then run the generation script.
+
+```bash
+./generate-code
+```
+
+Then build with stack.
+
+```bash
+stack build
+```
+
 ## Usage Example
 
 ```haskell

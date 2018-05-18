@@ -1,5 +1,8 @@
-resolver: nightly-2017-09-06
+resolver: lts-11.9
 flags: {}
 packages:
-  - location: '.'
-extra-deps: []
+- location: '.'
+extra-deps:
+- proto-lens-0.3.1.0
+- proto-lens-protoc-0.3.1.0
+- lens-labels-0.2.0.1
