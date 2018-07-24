@@ -79,16 +79,17 @@ library
                  , System.Metrics.Prometheus.RegistryT
 
   other-modules: Proto.Proto.Metrics
+               , Proto.Proto.Metrics_Fields
 
   build-depends: base              >= 4.7  && < 4.11
                , atomic-primops    >= 0.8  && < 0.9
                , bytestring        >= 0.10 && < 0.11
                , containers        >= 0.5  && < 0.6
                , http-client       >= 0.5  && < 0.6
-               , http-types        >= 0.8  && < 0.10
+               , http-types        >= 0.8  && < 0.13
                , lens              >= 4.15 && < 4.16
-               , proto-lens        >= 0.2  && < 0.3
-               , proto-lens-protoc >= 0.2  && < 0.3
+               , proto-lens        >= 0.3  && < 0.4
+               , proto-lens-protoc >= 0.3  && < 0.4
                , text              >= 1.2  && < 1.3
                , transformers      >= 0.4  && < 0.6
                , wai               >= 3.2  && < 3.3

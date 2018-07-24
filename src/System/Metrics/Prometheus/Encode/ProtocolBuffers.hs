@@ -6,17 +6,15 @@ module System.Metrics.Prometheus.Encode.ProtocolBuffers
   ) where
 
 import           Control.Lens.Operators
-import           Data.ByteString.Lazy.Builder               (Builder,
-                                                             toLazyByteString)
-import qualified Data.Map                                   as Map
-import           Data.ProtoLens                             (def)
-import           Data.ProtoLens.Encoding                    (buildMessageDelimited)
-import           Network.HTTP.Client                        (Request,
-                                                             RequestBody (..),
-                                                             requestBody,
-                                                             requestHeaders)
-import           Network.Wreq.Types                         (Putable (..))
-import qualified Proto.Proto.Metrics                        as Proto
+import           Data.ByteString.Lazy.Builder (Builder, toLazyByteString)
+import qualified Data.Map                     as Map
+import           Data.ProtoLens               (def)
+import           Data.ProtoLens.Encoding      (buildMessageDelimited)
+import           Network.HTTP.Client          (Request, RequestBody (..),
+                                               requestBody, requestHeaders)
+import           Network.Wreq.Types           (Putable (..))
+import qualified Proto.Proto.Metrics          as Proto
+import qualified Proto.Proto.Metrics_Fields   as Proto
 
 import           System.Metrics.Prometheus.Metric           (MetricSample (..))
 import qualified System.Metrics.Prometheus.Metric.Counter   as Counter
