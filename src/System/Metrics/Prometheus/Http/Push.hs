@@ -1,5 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
 module System.Metrics.Prometheus.Http.Push
        ( pushHttpTextMetrics
        )

@@ -4,8 +4,8 @@ module System.Metrics.Prometheus.MetricId where
 
 import           Data.Map       (Map)
 import qualified Data.Map       as Map
-import           Data.Monoid    ()
-import           Data.Semigroup ()
+import           Data.Monoid    (Monoid)
+import           Data.Semigroup (Semigroup)
 import           Data.String    (IsString)
 import           Data.Text      (Text)
 import           Prelude        hiding (null)
