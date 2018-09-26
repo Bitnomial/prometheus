@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module System.Metrics.Prometheus.Registry
-       ( Registry
+       ( Registry(..)
        , RegistrySample (..)
        , new
        , registerCounter
