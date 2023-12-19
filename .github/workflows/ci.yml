@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  cabal:
+    name: cabal / ghc-${{ matrix.ghc }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          # - macOS-latest
+        cabal:
+          - "latest"
+        ghc:
+          - "8.10.7"
+          - "9.0.2"
+          - "9.2.8"
+          - "9.4.8"
+          - "9.6.3"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: haskell-actions/setup@v2
+        id: setup-haskell-cabal
+        name: Setup Haskell
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ matrix.cabal }}
+
+      - uses: actions/cache@v3
+        name: Cache cabal-store
+        with:
+          path: ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
+          key: ${{ matrix.os }}-${{ matrix.ghc }}-cabal
+
+      - name: Build
+        run: |
+          cabal update
+          cabal build package:prometheus --enable-tests --enable-benchmarks --write-ghc-environment-files=always --flags="buildexamples"
+
+      # TODO: Actually add tests
+      # - name: Test
+      #   run: |
+      #     cabal test package:prometheus --enable-tests
+
+  stack:
+    name: stack ${{ matrix.resolver }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          # - macOS-latest
+        stack: ["latest"]
+        resolver:
+          - "--stack-yaml ./stack-8.10.yaml"
+          - "--stack-yaml ./stack-9.0.yaml"
+          - "--stack-yaml ./stack-9.2.yaml"
+          - "--stack-yaml ./stack-9.4.yaml"
+          - "--stack-yaml ./stack-9.6.yaml"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: haskell-actions/setup@v2
+      name: Setup Haskell Stack
+      with:
+        stack-version: ${{ matrix.stack }}
+        enable-stack: true
+
+    - uses: actions/cache@v3
+      name: Cache ~/.stack
+      with:
+        path: ~/.stack
+        key: ${{ matrix.os }}-stack-${{ matrix.resolver }}
+
+    - name: Build
+      run: |
+        stack build --test --bench --no-run-tests --no-run-benchmarks --flag prometheus:buildexamples
+
+    # TODO: Actually add tests
+    # - name: Test
+    #   run: |
+    #     stack test
