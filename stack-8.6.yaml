@@ -1,5 +1,0 @@
-resolver: lts-14.27
-flags: {}
-packages:
-  - '.'
-extra-deps: []
