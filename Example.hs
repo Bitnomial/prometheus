@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Example where
+module Main where
 
 import Control.Monad.IO.Class (liftIO)
 import System.Metrics.Prometheus.Concurrent.RegistryT

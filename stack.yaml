@@ -1,6 +1,1 @@
----
-resolver: lts-21.4
-flags: {}
-packages:
-  - "."
-extra-deps: []
+./stack-9.6.yaml
