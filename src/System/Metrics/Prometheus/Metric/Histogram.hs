@@ -36,6 +36,7 @@ data HistogramSample = HistogramSample
     , histSum :: !Double
     , histCount :: !Int
     }
+    deriving Show
 
 
 new :: [UpperBound] -> IO Histogram

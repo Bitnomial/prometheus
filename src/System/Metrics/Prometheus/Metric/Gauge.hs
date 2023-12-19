@@ -16,7 +16,7 @@ import Data.IORef (IORef, atomicModifyIORef', newIORef)
 
 
 newtype Gauge = Gauge {unGauge :: IORef Double}
-newtype GaugeSample = GaugeSample {unGaugeSample :: Double}
+newtype GaugeSample = GaugeSample {unGaugeSample :: Double} deriving Show
 
 
 new :: IO Gauge

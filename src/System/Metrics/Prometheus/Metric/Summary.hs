@@ -8,3 +8,4 @@ data SummarySample = SummarySample
     , sumSum :: !Int
     , sumCount :: !Int
     }
+    deriving Show
