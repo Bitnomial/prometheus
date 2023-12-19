@@ -60,6 +60,12 @@ description:
 extra-source-files: Example.hs
                   , README.md
 
+-- This flag builds the Example.hs file.  It is only used for testing.  It
+-- is enabled in CI.
+flag buildexamples
+  description: Build the Example.hs file. This is normally only used for testing.
+  default:     False
+
 library
   hs-source-dirs: src
   default-language: Haskell2010
@@ -94,6 +100,20 @@ library
                , transformers    >= 0.4  && < 0.7
                , wai             >= 3.2  && < 3.3
                , warp            >= 3.2  && < 3.5
+
+executable prometheus-example
+  main-is: Example.hs
+  default-language: Haskell2010
+
+  ghc-options: -Wall -fwarn-tabs -fno-warn-unused-do-bind
+
+  build-depends: base
+               , prometheus
+
+  if flag(buildexamples)
+    buildable:         True
+  else
+    buildable:         False
 
 source-repository head
   type:     git
