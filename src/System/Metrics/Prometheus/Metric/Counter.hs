@@ -15,7 +15,7 @@ import Data.Atomics.Counter (AtomicCounter, incrCounter, newCounter, writeCounte
 
 
 newtype Counter = Counter {unCounter :: AtomicCounter}
-newtype CounterSample = CounterSample {unCounterSample :: Int}
+newtype CounterSample = CounterSample {unCounterSample :: Int} deriving Show
 
 
 new :: IO Counter

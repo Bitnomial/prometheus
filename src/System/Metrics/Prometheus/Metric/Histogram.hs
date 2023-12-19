@@ -36,6 +36,7 @@ data HistogramSample = HistogramSample
     , histSum :: !Double
     , histCount :: !Int
     }
+    deriving Show
 
 
 new :: [UpperBound] -> IO Histogram
@@ -49,7 +50,7 @@ new buckets = Histogram <$> newIORef empty
 observeAndSample :: Double -> Histogram -> IO HistogramSample
 observeAndSample x = flip atomicModifyIORef' update . unHistogram
   where
-    update histData = (hist' histData, histData)
+    update histData = (hist' histData, hist' histData)
     hist' histData =
         histData
             { histBuckets = updateBuckets x $ histBuckets histData
