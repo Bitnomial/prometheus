@@ -90,13 +90,13 @@ library
 
   build-depends: base            >= 4.9  && < 5
                , atomic-primops  >= 0.8  && < 0.9
-               , bytestring      >= 0.10 && < 0.12
+               , bytestring      >= 0.10 && < 0.13
                , containers      >= 0.5  && < 0.7
                , http-client     >= 0.4  && < 0.8
                , http-client-tls >= 0.3  && < 0.4
                , http-types      >= 0.8  && < 0.13
                , network-uri     >= 2.5  && < 2.7
-               , text            >= 1.2  && < 2.1
+               , text            >= 1.2  && < 2.2
                , transformers    >= 0.4  && < 0.7
                , wai             >= 3.2  && < 3.3
                , warp            >= 3.2  && < 3.5
